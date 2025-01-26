@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 public class ReportController implements ReportApi {
-
     private final CourseService courseService;
     private final StudentService studentService;
     private final StudentMapper studentMapper;

@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TeacherControllerIT {
-
     @LocalServerPort
     private int port;
 
@@ -168,5 +167,4 @@ public class TeacherControllerIT {
         assertEquals(40, teachers[1].getAge());
         assertEquals("JAVA", teachers[1].getGroup());
     }
-
 }

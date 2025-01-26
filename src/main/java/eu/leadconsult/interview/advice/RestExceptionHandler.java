@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class RestExceptionHandler {
-
     @ExceptionHandler({EntityNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleException(RuntimeException e) {
         ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());

@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class StudentServiceImpl implements StudentService {
-
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
 

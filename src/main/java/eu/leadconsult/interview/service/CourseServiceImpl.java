@@ -25,7 +25,6 @@ import java.util.stream.Stream;
 @Transactional
 @AllArgsConstructor
 public class CourseServiceImpl implements CourseService {
-
     private final CourseRepository courseRepository;
     private final StudentService studentService;
     private final TeacherService teacherService;

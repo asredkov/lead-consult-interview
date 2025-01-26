@@ -6,7 +6,6 @@ import eu.leadconsult.interview.dto.TeacherDTO;
 import eu.leadconsult.interview.dto.enums.CourseType;
 
 public class MockUtil {
-
     public static StudentDTO mockStudentDTO(int id, String name, int age, String group) {
         StudentDTO student = new StudentDTO();
         student.setId(id);

@@ -12,7 +12,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 public class CourseController implements CourseApi {
-
     private final CourseService courseService;
 
     @Override

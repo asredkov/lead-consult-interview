@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 public class TeacherController implements TeacherApi {
-
     private final TeacherService teacherService;
 
     @Override

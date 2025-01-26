@@ -17,7 +17,6 @@ import java.util.List;
 )
 @RequestMapping("/api/reports")
 public interface ReportApi {
-
     @Operation(summary = "Get students by course.", description = "Find which students participate in specific course.")
     @GetMapping("/studentsByCourse/{courseId}")
     List<StudentDTO> getStudentsByCourse(@PathVariable int courseId);
@@ -32,12 +31,9 @@ public interface ReportApi {
     @GetMapping("/studentsByCourseAndAge")
     List<StudentDTO> getStudentsByCourseAndAge(@RequestParam int courseId, @RequestParam int age);
 
-
     @Operation(
             summary = "Find all by course and group.",
             description = "Find all teachers and students for specific group and course.")
     @GetMapping("/findAllByCourseAndGroup")
     List<PersonDTO> findAllByCourseAndGroup(@RequestParam int courseId, @RequestParam String group);
-
-
 }

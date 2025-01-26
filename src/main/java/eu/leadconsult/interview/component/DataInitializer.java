@@ -13,7 +13,6 @@ import javax.sql.DataSource;
 @Profile("initial-data")
 @AllArgsConstructor
 public class DataInitializer implements CommandLineRunner {
-
     private final DataSource dataSource;
 
     @Override

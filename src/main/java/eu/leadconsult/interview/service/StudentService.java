@@ -6,7 +6,6 @@ import eu.leadconsult.interview.entity.Student;
 import java.util.List;
 
 public interface StudentService {
-
     StudentDTO createStudent(StudentDTO studentDTO);
 
     StudentDTO getStudent(int id);

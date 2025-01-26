@@ -9,7 +9,6 @@ import eu.leadconsult.interview.entity.Course;
 import java.util.List;
 
 public interface CourseService {
-
     CourseDTO createCourse(CourseDTO courseDTO);
 
     List<CourseDTO> getCourses();

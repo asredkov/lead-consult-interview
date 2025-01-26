@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CourseControllerIT {
-
     @LocalServerPort
     private int port;
 
@@ -240,6 +239,4 @@ public class CourseControllerIT {
 
         assertEquals(HttpStatus.CONFLICT, exception.getStatusCode());
     }
-
-
 }

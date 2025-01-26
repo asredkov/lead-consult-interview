@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 public class StudentController implements StudentApi {
-
     private final StudentService studentService;
 
     @Override
@@ -43,6 +42,4 @@ public class StudentController implements StudentApi {
     public long countStudents() {
         return studentService.countStudents();
     }
-
-
 }

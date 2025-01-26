@@ -17,7 +17,6 @@ import java.util.List;
 @Tag(name = "Courses Rest API", description = "Handles courses related operations.")
 @RequestMapping("/api/courses")
 public interface CourseApi {
-
     @Operation(summary = "Add new course.")
     @PostMapping
     CourseDTO createCourse(@RequestBody CourseDTO course);

@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class StudentControllerIT {
-
     @LocalServerPort
     private int port;
 
@@ -173,5 +172,4 @@ public class StudentControllerIT {
         assertNotNull(response.getBody());
         assertEquals(3, response.getBody());
     }
-
 }

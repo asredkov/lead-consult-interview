@@ -16,7 +16,6 @@ import java.util.List;
 @Tag(name = "Teachers Rest API", description = "Handles teachers related operations.")
 @RequestMapping("/api/teachers")
 public interface TeacherApi {
-
     @Operation(summary = "Add new teacher.")
     @PostMapping
     TeacherDTO createTeacher(@RequestBody TeacherDTO teacherDTO);
@@ -40,6 +39,4 @@ public interface TeacherApi {
     @Operation(summary = "Get teachers count.", description = "Get total number of teachers.")
     @GetMapping("/count")
     long countTeachers();
-
-
 }

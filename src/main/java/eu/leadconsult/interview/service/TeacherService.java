@@ -6,7 +6,6 @@ import eu.leadconsult.interview.entity.Teacher;
 import java.util.List;
 
 public interface TeacherService {
-
     TeacherDTO createTeacher(TeacherDTO teacherDTO);
 
     TeacherDTO getTeacher(int id);

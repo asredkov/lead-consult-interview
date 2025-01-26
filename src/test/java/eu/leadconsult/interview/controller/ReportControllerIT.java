@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(scripts = {"/courses-data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class ReportControllerIT {
-
     @LocalServerPort
     private int port;
 
@@ -177,5 +176,4 @@ public class ReportControllerIT {
                         person.getGroup().equals(students.get(2).getGroup())
                 ));
     }
-
 }

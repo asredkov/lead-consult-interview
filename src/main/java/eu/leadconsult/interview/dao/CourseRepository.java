@@ -13,7 +13,6 @@ import java.util.Set;
 public interface CourseRepository extends JpaRepository<Course, Integer> {
     long countByType(CourseType type);
 
-
     @Query("SELECT s FROM Course c JOIN c.students s WHERE c.id = :courseId AND s.age > :age")
     Set<Student> findStudentsByCourseAndAge(@Param("courseId") int courseId, @Param("age") int age);
 
