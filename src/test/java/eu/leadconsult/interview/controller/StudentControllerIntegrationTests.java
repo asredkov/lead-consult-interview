@@ -1,6 +1,6 @@
 package eu.leadconsult.interview.controller;
 
-import eu.leadconsult.interview.dto.TeacherDTO;
+import eu.leadconsult.interview.dto.StudentDTO;
 import eu.leadconsult.interview.controller.util.MockUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,27 +18,29 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TeacherControllerIT {
+public class StudentControllerIntegrationTests {
     @LocalServerPort
     private int port;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
     private String getBaseUrl() {
-        return "http://localhost:" + port + "/api/teachers";
+        return "http://localhost:" + port + "/api/students";
     }
 
     private final int INVALID_ID = 100;
     private final String NAME = "Ivan Ivanov";
-    private final int AGE = 35;
-    private final String GROUP = "PYTHON";
-    private final TeacherDTO mockedTeacherDTO = MockUtil.mockTeacherDTO(INVALID_ID, NAME, AGE, GROUP);
+    private final int AGE = 25;
+    private final String GROUP = "SQL";
+    private final StudentDTO mockedStudentDTO = MockUtil.mockStudentDTO(INVALID_ID, NAME, AGE, GROUP);
 
     @Test
-    void createAndGetTeacher() {
-        ResponseEntity<TeacherDTO> response =
-                restTemplate.postForEntity(getBaseUrl(), mockedTeacherDTO, TeacherDTO.class);
+    void createAndGetStudent() {
+
+        ResponseEntity<StudentDTO> response =
+                restTemplate.postForEntity(getBaseUrl(), mockedStudentDTO, StudentDTO.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -49,7 +51,7 @@ public class TeacherControllerIT {
         assertEquals(AGE, response.getBody().getAge());
         assertEquals(GROUP, response.getBody().getGroup());
 
-        response = restTemplate.getForEntity(getBaseUrl() + "/" + actualId, TeacherDTO.class);
+        response = restTemplate.getForEntity(getBaseUrl() + "/" + actualId, StudentDTO.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -60,10 +62,34 @@ public class TeacherControllerIT {
     }
 
     @Test
-    void getTeacherThrowsException() {
+    @Sql(scripts = {"/students-data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void getStudents() {
+        ResponseEntity<StudentDTO[]> response =
+                restTemplate.getForEntity(getBaseUrl(), StudentDTO[].class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(3, response.getBody().length);
+
+        StudentDTO[] students = response.getBody();
+        assertEquals("Ivan Ivanov", students[0].getName());
+        assertEquals(22, students[0].getAge());
+        assertEquals("JAVA", students[0].getGroup());
+
+        assertEquals("Petar Todorov", students[1].getName());
+        assertEquals(20, students[1].getAge());
+        assertEquals("JAVA", students[1].getGroup());
+
+        assertEquals("Georgi Yordanov", students[2].getName());
+        assertEquals(25, students[2].getAge());
+        assertEquals("PYTHON", students[2].getGroup());
+    }
+
+    @Test
+    void getStudentThrowsException() {
         HttpClientErrorException exception = assertThrows(
                 HttpClientErrorException.BadRequest.class,
-                () -> restTemplate.getForEntity(getBaseUrl() + "/INVALID_ID", TeacherDTO.class)
+                () -> restTemplate.getForEntity(getBaseUrl() + "/INVALID_ID", StudentDTO.class)
         );
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
@@ -75,10 +101,10 @@ public class TeacherControllerIT {
     }
 
     @Test
-    void updateTeacher() {
-        TeacherDTO teacherDTO = MockUtil.mockTeacherDTO(INVALID_ID, NAME, AGE, GROUP);
-        ResponseEntity<TeacherDTO> response =
-                restTemplate.postForEntity(getBaseUrl(), teacherDTO, TeacherDTO.class);
+    void updateStudent() {
+        StudentDTO studentDTO = MockUtil.mockStudentDTO(INVALID_ID, NAME, AGE, GROUP);
+        ResponseEntity<StudentDTO> response =
+                restTemplate.postForEntity(getBaseUrl(), studentDTO, StudentDTO.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -87,13 +113,13 @@ public class TeacherControllerIT {
         int id = response.getBody().getId();
         String newName = "Petar Petrov";
 
-        teacherDTO.setName(newName);
+        studentDTO.setName(newName);
 
         response = restTemplate.exchange(
                 getBaseUrl() + "/" + id,
                 HttpMethod.PUT,
-                new HttpEntity<>(teacherDTO),
-                TeacherDTO.class
+                new HttpEntity<>(studentDTO),
+                StudentDTO.class
         );
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -104,13 +130,12 @@ public class TeacherControllerIT {
 
 
     @Test
-    void deleteTeacher() {
-        ResponseEntity<TeacherDTO> createResponse =
-                restTemplate.postForEntity(getBaseUrl(), mockedTeacherDTO, TeacherDTO.class);
+    void deleteStudent() {
+        ResponseEntity<StudentDTO> createResponse =
+                restTemplate.postForEntity(getBaseUrl(), mockedStudentDTO, StudentDTO.class);
 
         assertEquals(HttpStatus.OK, createResponse.getStatusCode());
         assertNotNull(createResponse.getBody());
-        assertEquals(NAME, createResponse.getBody().getName());
 
         int id = createResponse.getBody().getId();
 
@@ -134,37 +159,17 @@ public class TeacherControllerIT {
         );
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
         String expectedMessage =
-                "{\"status\":404,\"message\":\"Teacher with id = " + id + " not found.\"}";
+                "{\"status\":404,\"message\":\"Student with id = " + id + " not found.\"}";
         assertEquals(expectedMessage, exception.getResponseBodyAsString());
     }
 
     @Test
-    @Sql(scripts = {"/teachers-data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void countTeachers() {
+    @Sql(scripts = {"/students-data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void countStudents() {
         ResponseEntity<Long> response = restTemplate.getForEntity(getBaseUrl() + "/count", Long.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(2, response.getBody());
-    }
-
-    @Test
-    @Sql(scripts = {"/teachers-data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void getTeachers() {
-        ResponseEntity<TeacherDTO[]> response =
-                restTemplate.getForEntity(getBaseUrl(), TeacherDTO[].class);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(2, response.getBody().length);
-
-        TeacherDTO[] teachers = response.getBody();
-        assertEquals("Kalin Dimitrov", teachers[0].getName());
-        assertEquals(38, teachers[0].getAge());
-        assertEquals("JAVA", teachers[0].getGroup());
-
-        assertEquals("Dimitar Georgiev", teachers[1].getName());
-        assertEquals(40, teachers[1].getAge());
-        assertEquals("JAVA", teachers[1].getGroup());
+        assertEquals(3, response.getBody());
     }
 }
