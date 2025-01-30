@@ -48,4 +48,5 @@ Set the active profile to: `initial-data`.
 Run `InterviewApplication` as java application.
 
 #### GIT BASH:
-Execute following command in GIT BASH: `mvn spring-boot:run -Dspring-boot.run.profiles=initial-data`
+Run `mvn clean install` to build the project.
+Run `mvn spring-boot:run -Dspring-boot.run.profiles=initial-data`
